@@ -1,0 +1,45 @@
+---
+import { useContent } from '../i18n/content';
+
+const t = useContent(Astro.currentLocale);
+---
+
+<section id="trajetoria" class="container section">
+	<h2 class="section-title">{t.trajetoria.title}</h2>
+	<div class="list">
+		{
+			t.trajetoria.etapas.map(({ periodo, cargo, resumo }) => (
+				<div class="item">
+					<div class="periodo display">{periodo}</div>
+					<div class="cargo">{cargo}</div>
+					<div class="muted resumo">{resumo}</div>
+				</div>
+			))
+		}
+	</div>
+</section>
+
+<style>
+	.list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 28px;
+		margin-top: 32px;
+	}
+	.item {
+		flex: 1 1 260px;
+		min-width: 0;
+	}
+	.periodo {
+		font-size: 36px;
+		line-height: 1;
+		letter-spacing: 0;
+	}
+	.cargo {
+		margin-top: 10px;
+		font-weight: 600;
+	}
+	.resumo {
+		font-size: 16px;
+	}
+</style>

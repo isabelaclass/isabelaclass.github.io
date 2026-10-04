@@ -1,0 +1,105 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getLang, useContent, type Lang } from '../i18n/content';
+
+const lang = getLang(Astro.currentLocale);
+const t = useContent(Astro.currentLocale);
+
+const links = [
+	{ href: '#projetos', label: t.nav.projetos },
+	{ href: '#trajetoria', label: t.nav.trajetoria },
+	{ href: '#contato', label: t.nav.contato },
+];
+
+const idiomas: { code: Lang; label: string; nome: string }[] = [
+	{ code: 'pt', label: 'PT', nome: 'Português' },
+	{ code: 'en', label: 'EN', nome: 'English' },
+];
+---
+
+<header class="container header">
+	<a href="#topo" class="brand display">Isabela Class</a>
+	<nav aria-label={t.nav.label}>
+		<div class="links">
+			{links.map(({ href, label }) => <a href={href}>{label}</a>)}
+		</div>
+		<div class="lang" role="group" aria-label={t.nav.idioma}>
+			{
+				idiomas.map(({ code, label, nome }) => (
+					<a
+						href={getRelativeLocaleUrl(code)}
+						hreflang={code}
+						lang={code}
+						aria-label={nome}
+						class:list={{ active: code === lang }}
+						aria-current={code === lang ? 'page' : undefined}
+					>
+						{label}
+					</a>
+				))
+			}
+		</div>
+	</nav>
+</header>
+
+<style>
+	.header {
+		padding-top: 28px;
+		padding-bottom: 28px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+	}
+	.brand {
+		font-size: 22px;
+		text-decoration: none;
+	}
+	nav {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 28px;
+		font-weight: 500;
+		font-size: 16px;
+	}
+	.links {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		width: 260px;
+	}
+	.links a {
+		text-decoration: none;
+		padding: 12px 0;
+	}
+	.lang {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		width: 116px;
+		border: 2px solid var(--ink);
+		border-radius: 999px;
+		padding: 4px;
+	}
+	.lang a {
+		flex: 1 1 0;
+		text-align: center;
+		text-decoration: none;
+		border-radius: 999px;
+		padding: 8px 0;
+		font-size: 14px;
+		font-weight: 600;
+	}
+	.lang a.active {
+		background: var(--ink);
+		color: #fff;
+	}
+	@media (max-width: 480px) {
+		.links {
+			width: auto;
+		}
+	}
+</style>

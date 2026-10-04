@@ -1,0 +1,101 @@
+:root {
+	--ink: #2b1026;
+	--ink-soft: #5a4253;
+	--paper: #ffffff;
+	--magenta: #c2185b;
+	--orange: #ff7a2f;
+	--accent: #ff4f9a;
+	--blush: #ffe9f2;
+
+	--font-display: 'Fraunces Variable', Georgia, serif;
+	--font-body: 'Instrument Sans Variable', system-ui, sans-serif;
+
+	--container: 1120px;
+	--gutter: 32px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	background: var(--paper);
+	color: var(--ink);
+	font-family: var(--font-body);
+	font-size: 18px;
+	line-height: 1.5;
+	overflow-x: hidden;
+}
+
+a {
+	color: var(--ink);
+}
+a:hover {
+	color: var(--magenta);
+}
+
+.container {
+	max-width: var(--container);
+	margin: 0 auto;
+	padding-left: var(--gutter);
+	padding-right: var(--gutter);
+}
+
+.display {
+	font-family: var(--font-display);
+	font-weight: 900;
+	letter-spacing: -0.02em;
+}
+
+.muted {
+	color: var(--ink-soft);
+}
+
+.section {
+	padding-bottom: 96px;
+}
+
+.section-title {
+	margin: 0;
+	border-top: 2px solid var(--ink);
+	padding-top: 28px;
+	font-family: var(--font-display);
+	font-weight: 900;
+	font-size: 52px;
+	line-height: 1;
+	letter-spacing: -0.02em;
+}
+
+.pill {
+	display: inline-block;
+	border: 2px solid var(--ink);
+	border-radius: 999px;
+	padding: 6px 14px;
+	font-size: 14px;
+	font-weight: 600;
+}
+.pill--brotando {
+	background: var(--magenta);
+	border-color: var(--magenta);
+	color: #fff;
+}
+.pill--maduro {
+	background: var(--ink);
+	color: #fff;
+}
+
+@media (max-width: 640px) {
+	:root {
+		--gutter: 16px;
+	}
+	.section-title {
+		font-size: 40px;
+	}
+}

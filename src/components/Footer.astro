@@ -1,0 +1,58 @@
+---
+import { useContent } from '../i18n/content';
+
+const t = useContent(Astro.currentLocale);
+
+const links = [
+	{ href: 'https://www.linkedin.com/in/isabelaclass/', label: 'LinkedIn' },
+	{ href: 'https://github.com/isabelaclass', label: 'GitHub' },
+	{ href: 'mailto:isabelaclass@gmail.com', label: 'E-mail' },
+];
+---
+
+<footer id="contato">
+	<div class="container inner">
+		<div class="display cta">{t.footer.cta}</div>
+		<div class="links">
+			{
+				links.map(({ href, label }) => (
+					<a href={href} {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {})}>
+						{label}
+					</a>
+				))
+			}
+		</div>
+	</div>
+</footer>
+
+<style>
+	footer {
+		background: var(--ink);
+		color: #fff;
+	}
+	.inner {
+		padding-top: 40px;
+		padding-bottom: 40px;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 20px;
+	}
+	.cta {
+		font-size: 32px;
+	}
+	.links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 28px;
+		font-weight: 600;
+	}
+	.links a {
+		color: #fff;
+		padding: 12px 0;
+	}
+	.links a:hover {
+		color: var(--accent);
+	}
+</style>

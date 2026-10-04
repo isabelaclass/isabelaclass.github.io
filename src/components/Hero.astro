@@ -1,0 +1,150 @@
+---
+import { useContent } from '../i18n/content';
+
+const t = useContent(Astro.currentLocale);
+
+const edges = [
+	[250, 230, 95, 120],
+	[250, 230, 410, 95],
+	[250, 230, 455, 300],
+	[250, 230, 330, 420],
+	[250, 230, 110, 370],
+	[95, 120, 40, 250],
+	[95, 120, 215, 45],
+	[410, 95, 215, 45],
+	[410, 95, 500, 190],
+	[455, 300, 500, 190],
+	[455, 300, 330, 420],
+	[110, 370, 40, 250],
+	[330, 420, 225, 462],
+];
+
+// fill: cor sólida; ring: círculo branco com contorno
+const nodes = [
+	{ cx: 250, cy: 230, r: 78, fill: 'var(--accent)' },
+	{ cx: 95, cy: 120, r: 30, fill: 'var(--magenta)' },
+	{ cx: 410, cy: 95, r: 40, fill: 'var(--orange)' },
+	{ cx: 455, cy: 300, r: 24, fill: 'var(--ink)' },
+	{ cx: 330, cy: 420, r: 34, ring: true },
+	{ cx: 110, cy: 370, r: 18, fill: 'var(--ink)' },
+	{ cx: 40, cy: 250, r: 14, ring: true },
+	{ cx: 500, cy: 190, r: 13, fill: 'var(--magenta)' },
+	{ cx: 215, cy: 45, r: 16, ring: true },
+	{ cx: 225, cy: 462, r: 11, fill: 'var(--orange)' },
+];
+---
+
+<section id="topo" class="container hero">
+	<div class="hello">{t.hero.hello}</div>
+	<div class="title-row">
+		<h1 class="display">Isabela<br />Class</h1>
+		<div class="graph-slot" aria-hidden="true">
+			<svg viewBox="22 25 495 452">
+				<g class="edges">
+					{edges.map(([x1, y1, x2, y2]) => <line x1={x1} y1={y1} x2={x2} y2={y2} />)}
+				</g>
+				{
+					nodes.map(({ cx, cy, r, fill, ring }) =>
+						ring ? (
+							<circle cx={cx} cy={cy} r={r} class="ring" />
+						) : (
+							<circle cx={cx} cy={cy} r={r} style={`fill: ${fill}`} />
+						),
+					)
+				}
+			</svg>
+		</div>
+	</div>
+	<p class="lead" set:html={t.hero.lead} />
+	<p class="intro muted">{t.hero.intro}</p>
+	<div class="sticker">{t.hero.sticker}</div>
+</section>
+
+<style>
+	.hero {
+		position: relative;
+		padding-top: 72px;
+		padding-bottom: 96px;
+	}
+	.hello {
+		font-size: 22px;
+		font-weight: 500;
+		margin-left: 6px;
+		margin-bottom: 8px;
+	}
+	.title-row {
+		display: flex;
+		align-items: center;
+		gap: 0.15em;
+		font-size: clamp(64px, 13vw, 172px);
+	}
+	h1 {
+		flex: 0 0 auto;
+		margin: 0;
+		font-size: 1em;
+		line-height: 0.88;
+		letter-spacing: -0.035em;
+	}
+	.graph-slot {
+		flex: 1 1 0;
+		min-width: 0;
+		align-self: stretch;
+		position: relative;
+	}
+	svg {
+		position: absolute;
+		right: max(0px, min(calc(224px - 1.05em), calc(100% - 2.3em)));
+		top: 50%;
+		transform: translateY(-50%);
+		width: min(2.1em, 90%);
+		height: auto;
+		overflow: visible;
+	}
+	.edges {
+		fill: none;
+		stroke: var(--ink);
+		stroke-width: 3;
+		stroke-linecap: round;
+	}
+	.ring {
+		fill: #fff;
+		stroke: var(--ink);
+		stroke-width: 4;
+	}
+	.lead {
+		margin: 40px 0 0;
+		max-width: 680px;
+		font-size: 26px;
+		line-height: 1.35;
+		text-wrap: balance;
+	}
+	.lead em {
+		font-family: var(--font-display);
+		font-style: italic;
+		font-weight: 700;
+	}
+	.intro {
+		margin: 20px 0 0;
+		max-width: 620px;
+	}
+	.sticker {
+		display: inline-block;
+		margin-top: 36px;
+		transform: rotate(-3deg);
+		background: var(--ink);
+		color: #fff;
+		border-radius: 999px;
+		padding: 10px 20px;
+		font-size: 15px;
+		font-weight: 600;
+	}
+	@media (max-width: 640px) {
+		.hero {
+			padding-top: 40px;
+			padding-bottom: 72px;
+		}
+		.lead {
+			font-size: 22px;
+		}
+	}
+</style>

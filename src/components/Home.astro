@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Projetos from './Projetos.astro';
+import Trajetoria from './Trajetoria.astro';
+import Formacao from './Formacao.astro';
+import Footer from './Footer.astro';
+import { useContent } from '../i18n/content';
+
+const t = useContent(Astro.currentLocale);
+---
+
+<Layout title={t.meta.title} description={t.meta.description}>
+	<Header />
+	<main>
+		<Hero />
+		<Projetos />
+		<Trajetoria />
+		<Formacao />
+	</main>
+	<Footer />
+</Layout>

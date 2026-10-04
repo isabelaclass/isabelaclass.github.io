@@ -1,0 +1,273 @@
+---
+import { getLang, useContent, type Estagio } from '../i18n/content';
+
+const lang = getLang(Astro.currentLocale);
+const t = useContent(Astro.currentLocale);
+const [destaque, ...demais] = t.projetos.lista;
+const pillClass = (e: Estagio) => `pill pill--${e}`;
+
+// Modelo ilustrativo da demo: regressão logística em função dos dias sem contato.
+// Os mesmos parâmetros vão para o script do cliente via data-attributes.
+const MODELO = { b0: 1.4, b1: -0.09, maxDias: 60, inicial: 15 };
+const chance = (d: number) => 1 / (1 + Math.exp(-(MODELO.b0 + MODELO.b1 * d)));
+const toX = (d: number) => 8 + (d / MODELO.maxDias) * 384;
+const toY = (p: number) => 136 - p * 120;
+
+const curva = Array.from({ length: MODELO.maxDias / 2 + 1 }, (_, i) => i * 2)
+	.map((d, i) => `${i ? 'L' : 'M'}${toX(d).toFixed(1)} ${toY(chance(d)).toFixed(1)}`)
+	.join(' ');
+const p0 = chance(MODELO.inicial);
+const pct = (p: number) => `${Math.round(p * 100)}%`;
+---
+
+<section id="projetos" class="container section">
+	<div class="head">
+		<div>
+			<h2 class="display">{t.projetos.title}</h2>
+			<p class="muted">{t.projetos.intro}</p>
+		</div>
+		<div class="legend">
+			{
+				(['semente', 'brotando', 'maduro'] as const).map((e) => (
+					<span class={pillClass(e)}>{t.estagios[e]}</span>
+				))
+			}
+		</div>
+	</div>
+
+	<div class="grid">
+		<article class="card card--featured">
+			<div class="body">
+				<div class="meta">
+					<span class="num display">01</span>
+					<span class={pillClass(destaque.estagio)}>{t.estagios[destaque.estagio]}</span>
+				</div>
+				<h3 class="display">{destaque.titulo}</h3>
+				<p class="muted">{destaque.descricao}</p>
+				<div class="tema">{destaque.tema}</div>
+			</div>
+			<div
+				class="demo"
+				data-demo
+				data-b0={MODELO.b0}
+				data-b1={MODELO.b1}
+				data-max={MODELO.maxDias}
+				data-locale={lang === 'pt' ? 'pt-BR' : 'en'}
+			>
+				<div class="readout" aria-live="polite">
+					<span class="readout-label">{t.projetos.demo.chance}</span>
+					<span class="readout-value display" data-pct>{pct(p0)}</span>
+				</div>
+				<svg viewBox="0 0 400 150" role="img" aria-label={t.projetos.demo.ariaCurva}>
+					<path d={curva} class="curve"></path>
+					<circle cx={toX(MODELO.inicial)} cy={toY(p0)} r="11" class="dot" data-dot></circle>
+				</svg>
+				<label for={`dias-${lang}`}>
+					{t.projetos.demo.slider}: <strong data-dias>{MODELO.inicial}</strong>{' '}{t.projetos.demo.dias}
+				</label>
+				<input
+					id={`dias-${lang}`}
+					type="range"
+					min="0"
+					max={MODELO.maxDias}
+					value={MODELO.inicial}
+				/>
+				<div class="nota muted">{t.projetos.demo.nota}</div>
+			</div>
+		</article>
+
+		{
+			demais.map((p, i) => (
+				<article class="card">
+					<div class="meta">
+						<span class="num display">{String(i + 2).padStart(2, '0')}</span>
+						<span class={pillClass(p.estagio)}>{t.estagios[p.estagio]}</span>
+					</div>
+					<h3 class="display">{p.titulo}</h3>
+					<p class="muted">{p.descricao}</p>
+					<div class="tema">{p.tema}</div>
+				</article>
+			))
+		}
+	</div>
+</section>
+
+<script>
+	for (const demo of document.querySelectorAll<HTMLElement>('[data-demo]')) {
+		const b0 = Number(demo.dataset.b0);
+		const b1 = Number(demo.dataset.b1);
+		const max = Number(demo.dataset.max);
+		const fmt = new Intl.NumberFormat(demo.dataset.locale, { style: 'percent' });
+
+		const input = demo.querySelector('input')!;
+		const dot = demo.querySelector<SVGCircleElement>('[data-dot]')!;
+		const pctEl = demo.querySelector('[data-pct]')!;
+		const diasEl = demo.querySelector('[data-dias]')!;
+
+		const update = () => {
+			const d = Number(input.value);
+			const p = 1 / (1 + Math.exp(-(b0 + b1 * d)));
+			dot.setAttribute('cx', String(8 + (d / max) * 384));
+			dot.setAttribute('cy', String(136 - p * 120));
+			pctEl.textContent = fmt.format(p);
+			diasEl.textContent = String(d);
+		};
+
+		input.addEventListener('input', update);
+		update();
+	}
+</script>
+
+<style>
+	.head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 20px;
+		border-top: 2px solid var(--ink);
+		padding-top: 28px;
+		margin-bottom: 36px;
+	}
+	.head h2 {
+		margin: 0;
+		font-size: 52px;
+		line-height: 1;
+	}
+	.head p {
+		margin: 14px 0 0;
+		max-width: 560px;
+	}
+	.legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+	.grid {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 24px;
+	}
+	.card {
+		flex: 1 1 300px;
+		min-width: 0;
+		border: 2px solid var(--ink);
+		border-radius: 24px;
+		padding: 28px;
+	}
+	.card--featured {
+		flex-basis: 100%;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 32px;
+		padding: 32px;
+	}
+	.card--featured > * {
+		flex: 1 1 340px;
+		min-width: 0;
+	}
+	.meta {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+	.meta .pill {
+		padding: 4px 12px;
+	}
+	.card--featured .meta .pill {
+		padding: 6px 14px;
+	}
+	.num {
+		font-size: 20px;
+		letter-spacing: 0;
+	}
+	h3 {
+		margin: 18px 0 0;
+		font-size: 30px;
+		line-height: 1.08;
+		letter-spacing: -0.01em;
+	}
+	.card--featured h3 {
+		font-size: 46px;
+		line-height: 1.02;
+		letter-spacing: -0.02em;
+	}
+	.card p {
+		margin: 14px 0 0;
+		font-size: 16px;
+	}
+	.card--featured p {
+		margin-top: 16px;
+		font-size: 18px;
+	}
+	.tema {
+		margin-top: 18px;
+		font-size: 14px;
+		font-weight: 600;
+		color: var(--magenta);
+	}
+	.demo {
+		background: var(--blush);
+		border-radius: 16px;
+		padding: 24px;
+	}
+	.readout {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 12px;
+		margin-bottom: 8px;
+	}
+	.readout-label {
+		font-size: 14px;
+		font-weight: 600;
+	}
+	.readout-value {
+		font-size: 40px;
+		line-height: 1;
+		font-variant-numeric: tabular-nums;
+	}
+	.demo svg {
+		display: block;
+		width: 100%;
+		height: auto;
+		overflow: visible;
+	}
+	.curve {
+		fill: none;
+		stroke: var(--magenta);
+		stroke-width: 5;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	.dot {
+		fill: #fff;
+		stroke: var(--ink);
+		stroke-width: 4;
+	}
+	.demo label {
+		display: block;
+		margin-top: 16px;
+		font-size: 14px;
+		font-weight: 600;
+	}
+	.demo input {
+		width: 100%;
+		height: 44px;
+		accent-color: var(--ink);
+	}
+	.nota {
+		font-size: 14px;
+	}
+	@media (max-width: 640px) {
+		.head h2 {
+			font-size: 40px;
+		}
+		.card--featured {
+			padding: 24px;
+		}
+		.card--featured h3 {
+			font-size: 36px;
+		}
+	}
+</style>
