@@ -3,10 +3,11 @@ import { useContent } from '../i18n/content';
 
 const t = useContent(Astro.currentLocale);
 
+const EMAIL = 'isabelaclass@gmail.com';
+
 const links = [
 	{ href: 'https://www.linkedin.com/in/isabelaclass/', label: 'LinkedIn' },
 	{ href: 'https://github.com/isabelaclass', label: 'GitHub' },
-	{ href: 'mailto:isabelaclass@gmail.com', label: 'E-mail' },
 ];
 ---
 
@@ -16,14 +17,63 @@ const links = [
 		<div class="links">
 			{
 				links.map(({ href, label }) => (
-					<a href={href} {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener' } : {})}>
+					<a href={href} target="_blank" rel="noopener">
 						{label}
 					</a>
 				))
 			}
+			<button type="button" class="link-btn" popovertarget="email-popup">E-mail</button>
 		</div>
 	</div>
 </footer>
+
+<div id="email-popup" popover class="popup" role="dialog" aria-labelledby="email-popup-title">
+	<div class="popup-head">
+		<div id="email-popup-title" class="display popup-title">{t.footer.email.titulo}</div>
+		<button
+			type="button"
+			class="close"
+			popovertarget="email-popup"
+			popovertargetaction="hide"
+			aria-label={t.footer.email.fechar}
+		>
+			<svg viewBox="0 0 24 24" aria-hidden="true">
+				<path d="M6 6l12 12M18 6L6 18"></path>
+			</svg>
+		</button>
+	</div>
+	<div class="email-row">
+		<span class="email" data-email>{EMAIL}</span>
+		<button
+			type="button"
+			class="copy"
+			data-copy
+			data-label={t.footer.email.copiar}
+			data-done={t.footer.email.copiado}
+		>
+			{t.footer.email.copiar}
+		</button>
+	</div>
+</div>
+
+<script>
+	const btn = document.querySelector<HTMLButtonElement>('[data-copy]');
+	const email = document.querySelector('[data-email]')?.textContent ?? '';
+
+	btn?.addEventListener('click', async () => {
+		try {
+			await navigator.clipboard.writeText(email);
+			btn.textContent = btn.dataset.done!;
+			setTimeout(() => (btn.textContent = btn.dataset.label!), 2000);
+		} catch {
+			// sem permissão de clipboard: seleciona o texto para copiar manualmente
+			const range = document.createRange();
+			range.selectNodeContents(document.querySelector('[data-email]')!);
+			getSelection()?.removeAllRanges();
+			getSelection()?.addRange(range);
+		}
+	});
+</script>
 
 <style>
 	footer {
@@ -48,11 +98,98 @@ const links = [
 		gap: 28px;
 		font-weight: 600;
 	}
-	.links a {
+	.links a,
+	.link-btn {
 		color: #fff;
 		padding: 12px 0;
 	}
-	.links a:hover {
+	.link-btn {
+		background: none;
+		border: 0;
+		font: inherit;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+	.links a:hover,
+	.link-btn:hover {
 		color: var(--accent);
+	}
+
+	.popup {
+		width: min(440px, calc(100vw - 32px));
+		margin: auto;
+		border: 2px solid var(--ink);
+		border-radius: 24px;
+		padding: 28px;
+		background: #fff;
+		color: var(--ink);
+		box-shadow: 8px 8px 0 var(--accent);
+	}
+	.popup::backdrop {
+		background: rgb(43 16 38 / 0.45);
+	}
+	.popup-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+	}
+	.popup-title {
+		font-size: 30px;
+		line-height: 1.1;
+	}
+	.close {
+		flex: 0 0 auto;
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border: 2px solid var(--ink);
+		border-radius: 999px;
+		background: none;
+		color: var(--ink);
+		cursor: pointer;
+	}
+	.close svg {
+		width: 18px;
+		height: 18px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2.5;
+		stroke-linecap: round;
+	}
+	.close:hover {
+		background: var(--blush);
+	}
+	.email-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px 16px;
+		margin-top: 20px;
+		background: var(--blush);
+		border-radius: 16px;
+		padding: 12px 12px 12px 18px;
+	}
+	.email {
+		font-weight: 600;
+		overflow-wrap: anywhere;
+		user-select: all;
+	}
+	.copy {
+		min-height: 44px;
+		border: 0;
+		border-radius: 999px;
+		padding: 0 20px;
+		background: var(--ink);
+		color: #fff;
+		font: inherit;
+		font-size: 15px;
+		font-weight: 600;
+		cursor: pointer;
+	}
+	.copy:hover {
+		background: var(--magenta);
 	}
 </style>

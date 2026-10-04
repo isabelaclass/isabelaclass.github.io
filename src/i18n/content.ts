@@ -112,6 +112,12 @@ const pt = {
 	},
 	footer: {
 		cta: 'Vamos conversar?',
+		email: {
+			titulo: 'Me manda um e-mail',
+			copiar: 'Copiar',
+			copiado: 'Copiado!',
+			fechar: 'Fechar',
+		},
 	},
 };
 
@@ -223,6 +229,12 @@ const en: typeof pt = {
 	},
 	footer: {
 		cta: "Let's talk?",
+		email: {
+			titulo: 'Send me an email',
+			copiar: 'Copy',
+			copiado: 'Copied!',
+			fechar: 'Close',
+		},
 	},
 };
 
