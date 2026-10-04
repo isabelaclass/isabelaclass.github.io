@@ -5,7 +5,7 @@ export const getLang = (locale: string | undefined): Lang => (locale === 'en' ? 
 
 const pt = {
 	meta: {
-		title: 'Isabela Class · Engenheira de software',
+		title: 'Isabela Class',
 		description:
 			'Software para toda a jornada do cliente: integrações, análises e agentes de IA para operações de receita.',
 	},
@@ -123,7 +123,7 @@ const pt = {
 
 const en: typeof pt = {
 	meta: {
-		title: 'Isabela Class · Software engineer',
+		title: 'Isabela Class',
 		description:
 			'Software for the whole customer journey: integrations, analytics and AI agents for revenue operations.',
 	},
