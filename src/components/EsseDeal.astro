@@ -270,7 +270,7 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 			</section>
 
 			<section class="container bloco">
-				<div class="cabeca">
+				<div class="cabeca cabeca--larga">
 					<h2 class="section-title">{t.receita.titulo}</h2>
 					<div class="prosa">{t.receita.texto.map((p) => <p>{p}</p>)}</div>
 				</div>
@@ -1036,6 +1036,19 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 		}
 		.cabeca + * {
 			margin-top: 40px;
+		}
+		/* título curto e dois parágrafos: título na linha toda, parágrafos em duas colunas */
+		.cabeca--larga {
+			row-gap: 20px;
+		}
+		.cabeca--larga .section-title {
+			grid-column: 1 / -1;
+		}
+		.cabeca--larga .prosa {
+			display: contents;
+		}
+		.cabeca--larga .prosa p {
+			margin: 0;
 		}
 
 		.cem,
