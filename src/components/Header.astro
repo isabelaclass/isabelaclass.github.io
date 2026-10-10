@@ -2,12 +2,20 @@
 import { getRelativeLocaleUrl } from 'astro:i18n';
 import { getLang, useContent, type Lang } from '../i18n/content';
 
+interface Props {
+	/** caminho da página sem o prefixo de idioma; vazio na página inicial */
+	path?: string;
+}
+
+const { path = '' } = Astro.props;
 const lang = getLang(Astro.currentLocale);
 const t = useContent(Astro.currentLocale);
+// fora da página inicial, as âncoras apontam para a home
+const home = path ? getRelativeLocaleUrl(lang) : '';
 
 const links = [
-	{ href: '#projetos', label: t.nav.projetos },
-	{ href: '#trajetoria', label: t.nav.trajetoria },
+	{ href: `${home}#projetos`, label: t.nav.projetos },
+	{ href: `${home}#trajetoria`, label: t.nav.trajetoria },
 	{ href: '#contato', label: t.nav.contato },
 ];
 
@@ -18,7 +26,7 @@ const idiomas: { code: Lang; label: string; nome: string }[] = [
 ---
 
 <header class="container header">
-	<a href="#topo" class="brand display">Isabela Class</a>
+	<a href={path ? home : '#topo'} class="brand display">Isabela Class</a>
 	<nav aria-label={t.nav.label}>
 		<div class="links">
 			{links.map(({ href, label }) => <a href={href}>{label}</a>)}
@@ -27,7 +35,7 @@ const idiomas: { code: Lang; label: string; nome: string }[] = [
 			{
 				idiomas.map(({ code, label, nome }) => (
 					<a
-						href={getRelativeLocaleUrl(code)}
+						href={getRelativeLocaleUrl(code, path)}
 						hreflang={code}
 						lang={code}
 						aria-label={nome}

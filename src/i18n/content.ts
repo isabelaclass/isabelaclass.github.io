@@ -31,7 +31,7 @@ const pt = {
 			'São projetos interativos: em cada um você mexe em um gráfico ou em um modelo e vê o resultado mudar na hora. A explicação e o código vêm depois, para quem quiser conferir.',
 		lista: [
 			{
-				titulo: 'Esse deal vai fechar?',
+				titulo: 'Quando esse deal vai fechar?',
 				descricao: 'Mude as características de uma oportunidade e veja a previsão responder.',
 				tema: 'Pipeline, win/loss e previsão',
 				estagio: 'brotando' as Estagio,
@@ -62,6 +62,7 @@ const pt = {
 			chance: 'Chance de fechar',
 			nota: 'Modelo ilustrativo, ainda sem dados reais.',
 		},
+		ler: 'Ler o estudo',
 	},
 	trajetoria: {
 		title: 'Trajetória',
@@ -148,7 +149,7 @@ const en: typeof pt = {
 			'These are interactive projects: in each one you play with a chart or a model and watch the result change right away. The explanation and the code come after, for anyone who wants to dig in.',
 		lista: [
 			{
-				titulo: 'Will this deal close?',
+				titulo: 'When will this deal close?',
 				descricao: "Change an opportunity's characteristics and watch the forecast respond.",
 				tema: 'Pipeline, win/loss and forecasting',
 				estagio: 'brotando',
@@ -179,6 +180,7 @@ const en: typeof pt = {
 			chance: 'Chance to close',
 			nota: 'Illustrative model, no real data yet.',
 		},
+		ler: 'Read the study',
 	},
 	trajetoria: {
 		title: 'Experience',

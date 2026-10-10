@@ -1,5 +1,7 @@
 ---
+import { getRelativeLocaleUrl } from 'astro:i18n';
 import { getLang, useContent, type Estagio } from '../i18n/content';
+import { SLUG } from '../i18n/esse-deal';
 
 const lang = getLang(Astro.currentLocale);
 const t = useContent(Astro.currentLocale);
@@ -45,6 +47,10 @@ const pct = (p: number) => `${Math.round(p * 100)}%`;
 				<h3 class="display">{destaque.titulo}</h3>
 				<p class="muted">{destaque.descricao}</p>
 				<div class="tema">{destaque.tema}</div>
+				<a class="ler" href={getRelativeLocaleUrl(lang, SLUG)}>
+					{t.projetos.ler}
+					<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
+				</a>
 			</div>
 			<div
 				class="demo"
@@ -205,6 +211,33 @@ const pct = (p: number) => `${Math.round(p * 100)}%`;
 		font-size: 14px;
 		font-weight: 600;
 		color: var(--magenta);
+	}
+	.ler {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		min-height: 48px;
+		margin-top: 22px;
+		border-radius: 999px;
+		padding: 0 22px;
+		background: var(--ink);
+		color: #fff;
+		font-weight: 600;
+		font-size: 16px;
+		text-decoration: none;
+	}
+	.ler:hover {
+		background: var(--magenta);
+		color: #fff;
+	}
+	.ler svg {
+		width: 20px;
+		height: 20px;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 2.5;
+		stroke-linecap: round;
+		stroke-linejoin: round;
 	}
 	.demo {
 		background: var(--blush);

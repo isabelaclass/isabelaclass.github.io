@@ -9,9 +9,11 @@ import { getLang } from '../i18n/content';
 interface Props {
 	title: string;
 	description: string;
+	/** caminho da página sem o prefixo de idioma, ex.: 'projetos/x'; vazio na página inicial */
+	path?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, path = '' } = Astro.props;
 const lang = getLang(Astro.currentLocale);
 ---
 
@@ -21,10 +23,10 @@ const lang = getLang(Astro.currentLocale);
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="description" content={description} />
-		<link rel="canonical" href={getAbsoluteLocaleUrl(lang)} />
-		<link rel="alternate" hreflang="pt-BR" href={getAbsoluteLocaleUrl('pt')} />
-		<link rel="alternate" hreflang="en" href={getAbsoluteLocaleUrl('en')} />
-		<link rel="alternate" hreflang="x-default" href={getAbsoluteLocaleUrl('pt')} />
+		<link rel="canonical" href={getAbsoluteLocaleUrl(lang, path)} />
+		<link rel="alternate" hreflang="pt-BR" href={getAbsoluteLocaleUrl('pt', path)} />
+		<link rel="alternate" hreflang="en" href={getAbsoluteLocaleUrl('en', path)} />
+		<link rel="alternate" hreflang="x-default" href={getAbsoluteLocaleUrl('pt', path)} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
