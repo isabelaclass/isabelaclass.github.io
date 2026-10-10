@@ -104,13 +104,17 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 					<span class="muted">{t.andamento}</span>
 				</div>
 				<h1 class="display">{t.titulo}</h1>
-				<p class="lead" set:html={t.lead} />
-				<ul class="fatos">
-					{t.fatos.map((f) => <li>{f}</li>)}
-				</ul>
-				<div class="acoes">
-					<a class="btn btn--dark" href={REPO} target="_blank" rel="noopener">{t.codigo}</a>
-					<a class="btn" href={COLAB} target="_blank" rel="noopener">{t.colab}</a>
+				<div class="abertura">
+					<p class="lead" set:html={t.lead} />
+					<div class="ficha">
+						<ul class="fatos">
+							{t.fatos.map((f) => <li>{f}</li>)}
+						</ul>
+						<div class="acoes">
+							<a class="btn btn--dark" href={REPO} target="_blank" rel="noopener">{t.codigo}</a>
+							<a class="btn" href={COLAB} target="_blank" rel="noopener">{t.colab}</a>
+						</div>
+					</div>
 				</div>
 			</header>
 
@@ -124,8 +128,10 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 			</section>
 
 			<section class="container bloco">
-				<h2 class="section-title">{t.hipoteses.titulo}</h2>
-				<p class="prosa">{t.hipoteses.intro}</p>
+				<div class="cabeca">
+					<h2 class="section-title">{t.hipoteses.titulo}</h2>
+					<div class="prosa"><p>{t.hipoteses.intro}</p></div>
+				</div>
 				<div class="hip">
 					{
 						t.hipoteses.lista.map((h) => (
@@ -164,8 +170,10 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 			</section>
 
 			<section class="container bloco">
-				<h2 class="section-title">{t.destinos.titulo}</h2>
-				<div class="prosa">{t.destinos.texto.map((p) => <p>{p}</p>)}</div>
+				<div class="cabeca">
+					<h2 class="section-title">{t.destinos.titulo}</h2>
+					<div class="prosa">{t.destinos.texto.map((p) => <p>{p}</p>)}</div>
+				</div>
 				<div class="cem" role="img" aria-label={fatias.map((f) => `${Math.round(f.v)}% ${f.label}`).join(', ')}>
 					{
 						fatias.map((f) => (
@@ -176,28 +184,30 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 						))
 					}
 				</div>
-				<figure class="fig fig--wide">
-					<figcaption class="fig-t">{t.destinos.curvaTitulo}</figcaption>
-					<svg viewBox="0 0 640 254" role="img" aria-label={t.destinos.aria}>
-						{
-							[0, 25, 50, 75, 100].map((v) => (
-								<g>
-									<line class="grid" x1={C.x0} x2={C.x1} y1={cy(v)} y2={cy(v)} />
-									<text class="tick" x={C.x0 - 8} y={cy(v) + 4} text-anchor="end">{v}%</text>
-								</g>
-							))
-						}
-						<line class="limite" x1={cx(138)} x2={cx(138)} y1={C.y0} y2={C.y1} />
-						<text class="tick" x={cx(138) - 6} y={C.y1 - 8} text-anchor="end">138</text>
-						<path class="l-fechados" d={pFechados} />
-						<path class="l-todos" d={pTodos} />
-						<text class="rot rot--ink" x={cx(96)} y={cy(97)} text-anchor="end">{t.destinos.serieFechados}</text>
-						<text class="rot rot--mag" x={C.x1} y={cy(45)} text-anchor="end">{t.destinos.serieTodos} · {num.format(fimTodos)}%</text>
-						{[0, 30, 60, 90, 120, 150].map((v) => <text class="tick" x={cx(v)} y={C.y1 + 18} text-anchor="middle">{v}</text>)}
-						<text class="eixo" x={(C.x0 + C.x1) / 2} y="248" text-anchor="middle">{t.destinos.eixoX}</text>
-					</svg>
-				</figure>
-				<p class="nota muted prosa">{t.destinos.cuidado}</p>
+				<div class="lado lado--fig">
+					<figure class="fig">
+						<figcaption class="fig-t">{t.destinos.curvaTitulo}</figcaption>
+						<svg viewBox="0 0 640 254" role="img" aria-label={t.destinos.aria}>
+							{
+								[0, 25, 50, 75, 100].map((v) => (
+									<g>
+										<line class="grid" x1={C.x0} x2={C.x1} y1={cy(v)} y2={cy(v)} />
+										<text class="tick" x={C.x0 - 8} y={cy(v) + 4} text-anchor="end">{v}%</text>
+									</g>
+								))
+							}
+							<line class="limite" x1={cx(138)} x2={cx(138)} y1={C.y0} y2={C.y1} />
+							<text class="tick" x={cx(138) - 6} y={C.y1 - 8} text-anchor="end">138</text>
+							<path class="l-fechados" d={pFechados} />
+							<path class="l-todos" d={pTodos} />
+							<text class="rot rot--ink" x={cx(96)} y={cy(97)} text-anchor="end">{t.destinos.serieFechados}</text>
+							<text class="rot rot--mag" x={C.x1} y={cy(45)} text-anchor="end">{t.destinos.serieTodos} · {num.format(fimTodos)}%</text>
+							{[0, 30, 60, 90, 120, 150].map((v) => <text class="tick" x={cx(v)} y={C.y1 + 18} text-anchor="middle">{v}</text>)}
+							<text class="eixo" x={(C.x0 + C.x1) / 2} y="248" text-anchor="middle">{t.destinos.eixoX}</text>
+						</svg>
+					</figure>
+					<p class="nota muted">{t.destinos.cuidado}</p>
+				</div>
 			</section>
 
 			<section class="container bloco">
@@ -260,40 +270,48 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 			</section>
 
 			<section class="container bloco">
-				<h2 class="section-title">{t.receita.titulo}</h2>
-				<div class="prosa">{t.receita.texto.map((p) => <p>{p}</p>)}</div>
-				<h3 class="sub display">{t.receita.testeTitulo}</h3>
-				<p class="prosa">{t.receita.testeTexto}</p>
-				<figure class="fig fig--wide">
-					<div class="teste" role="img" aria-label={t.receita.aria} style={`--real: ${bw(teste[0].v)}%`}>
-						{
-							teste.map((b) => (
-								<div class="t-row">
-									<span class="b-label">{t.receita.barras[b.k]}</span>
-									<span class="t-trilho">
-										<span class={`t-bar ${b.cls}`} style={`width: ${bw(b.v)}%`} />
-										<span class="b-val">{mi(b.v)}</span>
-									</span>
-								</div>
-							))
-						}
+				<div class="cabeca">
+					<h2 class="section-title">{t.receita.titulo}</h2>
+					<div class="prosa">{t.receita.texto.map((p) => <p>{p}</p>)}</div>
+				</div>
+				<div class="lado lado--teste">
+					<div>
+						<h3 class="sub display">{t.receita.testeTitulo}</h3>
+						<p class="prosa">{t.receita.testeTexto}</p>
+						<ul class="notas">
+							{t.receita.notas.map((n) => <li set:html={n} />)}
+						</ul>
 					</div>
-				</figure>
-				<ul class="notas prosa">
-					{t.receita.notas.map((n) => <li set:html={n} />)}
-				</ul>
+					<figure class="fig">
+						<div class="teste" role="img" aria-label={t.receita.aria} style={`--real: ${bw(teste[0].v)}%`}>
+							{
+								teste.map((b) => (
+									<div class="t-row">
+										<span class="b-label">{t.receita.barras[b.k]}</span>
+										<span class="t-trilho">
+											<span class={`t-bar ${b.cls}`} style={`width: ${bw(b.v)}%`} />
+											<span class="b-val">{mi(b.v)}</span>
+										</span>
+									</div>
+								))
+							}
+						</div>
+					</figure>
+				</div>
 			</section>
 
 			<section class="container bloco">
-				<h2 class="section-title">{t.alarme.titulo}</h2>
-				<div class="duo">
-					<div class="prosa">{t.alarme.texto.map((p) => <p>{p}</p>)}</div>
+				<div class="cabeca">
+					<h2 class="section-title">{t.alarme.titulo}</h2>
+					<div class="prosa"><p>{t.alarme.texto[0]}</p></div>
+				</div>
+				<div class="lado lado--fig">
 					<figure class="fig">
 						<svg viewBox="0 0 640 254" role="img" aria-label={t.alarme.aria}>
 							{iMarc.length > 0 && (
 								<rect class="marca" x={ax(iMarc[0]) - passo / 2} y={A.y0} width={passo * iMarc.length} height={A.y1 - A.y0} rx="6" />
 							)}
-							{iMarc.length > 0 && <text class="marca-t" x={ax(iMarc[0]) - passo / 2 + 8} y={A.y0 + 16}>{t.alarme.destaque}</text>}
+							{iMarc.length > 0 && <text class="marca-t" x={ax(iMarc[0]) - passo / 2 + 8} y={A.y1 - 10}>{t.alarme.destaque}</text>}
 							{
 								[0, 100, 200].map((v) => (
 									<g>
@@ -312,6 +330,7 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 							<text class="eixo" x={(A.x0 + A.x1) / 2} y="248" text-anchor="middle">{t.alarme.eixo}</text>
 						</svg>
 					</figure>
+					<div class="prosa">{t.alarme.texto.slice(1).map((p) => <p>{p}</p>)}</div>
 				</div>
 			</section>
 
@@ -952,6 +971,121 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 		font-size: 32px;
 		line-height: 1.1;
 		max-width: 22ch;
+	}
+
+	/* blocos de texto que ocupam a largura toda no desktop */
+	.cabeca {
+		border-top: 2px solid var(--ink);
+		padding-top: 28px;
+	}
+	.cabeca .section-title {
+		border-top: 0;
+		padding-top: 0;
+	}
+	.cabeca + * {
+		margin-top: 32px;
+	}
+	.lado > .fig,
+	.lado > .nota,
+	.lado > .prosa {
+		margin-top: 24px;
+	}
+
+	@media (min-width: 900px) {
+		.abertura {
+			display: grid;
+			grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+			gap: 56px;
+			align-items: end;
+			margin-top: 32px;
+		}
+		.abertura .lead {
+			margin: 0;
+		}
+		.ficha {
+			border-left: 2px solid var(--ink);
+			padding-left: 32px;
+		}
+		.ficha .fatos {
+			margin: 0;
+		}
+
+		.resumo {
+			display: grid;
+			grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+			gap: 40px;
+			padding: 40px;
+		}
+		.resumo ol {
+			margin: 0;
+			max-width: none;
+		}
+
+		/* título à esquerda, abertura do texto à direita */
+		.cabeca {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+			gap: 56px;
+			align-items: start;
+		}
+		.cabeca .prosa {
+			max-width: none;
+		}
+		.cabeca .prosa p:first-child {
+			margin-top: 4px;
+		}
+		.cabeca + * {
+			margin-top: 40px;
+		}
+
+		.cem,
+		.fig--wide {
+			max-width: none;
+		}
+
+
+
+		.fim {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 32px;
+		}
+		.fim .acoes {
+			margin-top: 0;
+			flex: none;
+		}
+
+	/* gráfico e texto lado a lado só quando o gráfico ainda fica legível */
+	@media (min-width: 1024px) {
+		.lado {
+			display: grid;
+			gap: 56px;
+			align-items: end;
+		}
+		.lado--fig {
+			grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+		}
+		.lado--teste {
+			grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+			align-items: center;
+			margin-top: 56px;
+		}
+		.lado--teste .sub {
+			margin-top: 0;
+		}
+		.lado > .fig,
+		.lado > .nota,
+		.lado > .prosa {
+			margin-top: 0;
+		}
+		.lado > .prosa p:first-child {
+			margin-top: 0;
+		}
+		.cem + .lado {
+			margin-top: 40px;
+		}
+	}
 	}
 
 	@media (max-width: 640px) {
