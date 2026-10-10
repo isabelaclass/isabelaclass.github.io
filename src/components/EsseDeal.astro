@@ -70,8 +70,9 @@ const teste = [
 	{ k: 'm2', v: 1758712, cls: 'b-mod' },
 	{ k: 'm3', v: 1538243, cls: 'b-best' },
 ] as const;
-const B = { x0: 210, x1: 560, vmax: 3800000, row: 46 };
-const bw = (v: number) => (v / B.vmax) * (B.x1 - B.x0);
+// largura em % do trilho; a folga à direita guarda espaço para o valor da maior barra
+const vmax = 4700000;
+const bw = (v: number) => +((v / vmax) * 100).toFixed(2);
 
 // ---------- alarme: entradas semanais por regional ----------
 const sem = dados.central;
@@ -143,7 +144,7 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 				<div class="duo">
 					<div class="prosa">{t.media.texto.map((p) => <p>{p}</p>)}</div>
 					<figure class="fig">
-						<svg viewBox="0 0 640 230" role="img" aria-label={t.media.aria}>
+						<svg viewBox="0 0 640 248" role="img" aria-label={t.media.aria}>
 							{
 								ticksY.map((v) => (
 									<g>
@@ -156,7 +157,7 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 							<line class="media" x1={hx(48)} x2={hx(48)} y1={H.y0} y2={H.y1} />
 							<text class="media-t" x={hx(48) + 6} y={H.y0 + 12}>{t.media.mediaLabel}</text>
 							{ticksX.map((v) => <text class="tick" x={hx(v)} y={H.y1 + 18} text-anchor="middle">{v}</text>)}
-							<text class="eixo" x={(H.x0 + H.x1) / 2} y="226" text-anchor="middle">{t.media.eixo}</text>
+							<text class="eixo" x={(H.x0 + H.x1) / 2} y="240" text-anchor="middle">{t.media.eixo}</text>
 						</svg>
 					</figure>
 				</div>
@@ -177,7 +178,7 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 				</div>
 				<figure class="fig fig--wide">
 					<figcaption class="fig-t">{t.destinos.curvaTitulo}</figcaption>
-					<svg viewBox="0 0 640 236" role="img" aria-label={t.destinos.aria}>
+					<svg viewBox="0 0 640 254" role="img" aria-label={t.destinos.aria}>
 						{
 							[0, 25, 50, 75, 100].map((v) => (
 								<g>
@@ -191,9 +192,9 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 						<path class="l-fechados" d={pFechados} />
 						<path class="l-todos" d={pTodos} />
 						<text class="rot rot--ink" x={cx(96)} y={cy(97)} text-anchor="end">{t.destinos.serieFechados}</text>
-						<text class="rot rot--mag" x={C.x1} y={cy(fimTodos) + 22} text-anchor="end">{t.destinos.serieTodos} · {num.format(fimTodos)}%</text>
+						<text class="rot rot--mag" x={C.x1} y={cy(45)} text-anchor="end">{t.destinos.serieTodos} · {num.format(fimTodos)}%</text>
 						{[0, 30, 60, 90, 120, 150].map((v) => <text class="tick" x={cx(v)} y={C.y1 + 18} text-anchor="middle">{v}</text>)}
-						<text class="eixo" x={(C.x0 + C.x1) / 2} y="234" text-anchor="middle">{t.destinos.eixoX}</text>
+						<text class="eixo" x={(C.x0 + C.x1) / 2} y="248" text-anchor="middle">{t.destinos.eixoX}</text>
 					</svg>
 				</figure>
 				<p class="nota muted prosa">{t.destinos.cuidado}</p>
@@ -264,18 +265,19 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 				<h3 class="sub display">{t.receita.testeTitulo}</h3>
 				<p class="prosa">{t.receita.testeTexto}</p>
 				<figure class="fig fig--wide">
-					<svg viewBox={`0 0 640 ${teste.length * B.row + 12}`} role="img" aria-label={t.receita.aria}>
-						<line class="real-line" x1={B.x0 + bw(teste[0].v)} x2={B.x0 + bw(teste[0].v)} y1="4" y2={teste.length * B.row + 4} />
+					<div class="teste" role="img" aria-label={t.receita.aria} style={`--real: ${bw(teste[0].v)}%`}>
 						{
-							teste.map((b, i) => (
-								<g>
-									<text class="b-label" x={B.x0 - 14} y={i * B.row + 30} text-anchor="end">{t.receita.barras[b.k]}</text>
-									<rect class={b.cls} x={B.x0} y={i * B.row + 12} width={bw(b.v)} height="28" rx="6" />
-									<text class="b-val" x={B.x0 + bw(b.v) + 10} y={i * B.row + 31}>{mi(b.v)}</text>
-								</g>
+							teste.map((b) => (
+								<div class="t-row">
+									<span class="b-label">{t.receita.barras[b.k]}</span>
+									<span class="t-trilho">
+										<span class={`t-bar ${b.cls}`} style={`width: ${bw(b.v)}%`} />
+										<span class="b-val">{mi(b.v)}</span>
+									</span>
+								</div>
 							))
 						}
-					</svg>
+					</div>
 				</figure>
 				<ul class="notas prosa">
 					{t.receita.notas.map((n) => <li set:html={n} />)}
@@ -287,7 +289,7 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 				<div class="duo">
 					<div class="prosa">{t.alarme.texto.map((p) => <p>{p}</p>)}</div>
 					<figure class="fig">
-						<svg viewBox="0 0 640 236" role="img" aria-label={t.alarme.aria}>
+						<svg viewBox="0 0 640 254" role="img" aria-label={t.alarme.aria}>
 							{iMarc.length > 0 && (
 								<rect class="marca" x={ax(iMarc[0]) - passo / 2} y={A.y0} width={passo * iMarc.length} height={A.y1 - A.y0} rx="6" />
 							)}
@@ -303,11 +305,11 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 							<path class="l-east" d={serie('east')} />
 							<path class="l-west" d={serie('west')} />
 							<path class="l-central" d={serie('central')} />
-							<text class="rot rot--mag" x={ax(iMarc[1] ?? 8) + 18} y={ay(225) + 4}>{t.alarme.regionais.Central}</text>
-							<text class="rot rot--ink" x={A.x1} y={ay(sem[sem.length - 1].east) - 26} text-anchor="end">{t.alarme.regionais.East}</text>
+							<text class="rot rot--mag" x={ax(iMarc[iMarc.length - 1] ?? 8) + passo / 2 + 8} y={ay(170)}>{t.alarme.regionais.Central}</text>
+							<text class="rot rot--ink" x={A.x1} y={ay(sem[sem.length - 1].east) - 36} text-anchor="end">{t.alarme.regionais.East}</text>
 							<text class="rot rot--ora" x={A.x1} y={ay(sem[sem.length - 1].west) - 8} text-anchor="end">{t.alarme.regionais.West}</text>
 							{ticksSem.map(({ i, w }) => <text class="tick" x={ax(i)} y={A.y1 + 18} text-anchor="middle">{mesLabel(w.semana)}</text>)}
-							<text class="eixo" x={(A.x0 + A.x1) / 2} y="234" text-anchor="middle">{t.alarme.eixo}</text>
+							<text class="eixo" x={(A.x0 + A.x1) / 2} y="248" text-anchor="middle">{t.alarme.eixo}</text>
 						</svg>
 					</figure>
 				</div>
@@ -831,31 +833,57 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 		font-size: 30px;
 		line-height: 1.1;
 	}
+	.teste {
+		display: grid;
+		gap: 18px;
+	}
+	.t-row {
+		display: grid;
+		grid-template-columns: 196px minmax(0, 1fr);
+		align-items: center;
+		gap: 14px;
+	}
 	.b-label {
-		fill: var(--ink);
 		font-size: 14px;
 		font-weight: 600;
+		text-align: right;
+	}
+	.t-trilho {
+		position: relative;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		height: 28px;
+	}
+	/* linha tracejada do valor real, atravessando todas as barras */
+	.t-trilho::before {
+		content: '';
+		position: absolute;
+		left: var(--real);
+		top: -9px;
+		bottom: -9px;
+		border-left: 1.5px dashed var(--ink);
+		z-index: 1;
+	}
+	.t-bar {
+		height: 100%;
+		border-radius: 6px;
+		flex: none;
 	}
 	.b-val {
-		fill: var(--ink);
 		font-size: 14px;
 		font-weight: 700;
 		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
 	}
 	.b-real {
-		fill: var(--ink);
+		background: var(--ink);
 	}
 	.b-mod {
-		fill: var(--magenta);
-		fill-opacity: 0.45;
+		background: color-mix(in srgb, var(--magenta) 45%, #fff);
 	}
 	.b-best {
-		fill: var(--magenta);
-	}
-	.real-line {
-		stroke: var(--ink);
-		stroke-width: 1.5;
-		stroke-dasharray: 4 5;
+		background: var(--magenta);
 	}
 	.notas {
 		margin: 24px 0 0;
@@ -952,6 +980,28 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 		}
 		.pares .section-title {
 			font-size: 34px;
+		}
+		/* os SVGs encolhem para ~56% no celular; fontes maiores no viewBox mantêm ~10–11px na tela */
+		.fig .tick,
+		.fig .eixo {
+			font-size: 19px;
+		}
+		.fig .rot,
+		.fig .media-t {
+			font-size: 21px;
+		}
+		.fig .marca-t {
+			font-size: 18px;
+		}
+		.sim-fig .tick {
+			font-size: 15px;
+		}
+		.t-row {
+			grid-template-columns: minmax(0, 1fr);
+			gap: 6px;
+		}
+		.b-label {
+			text-align: left;
 		}
 	}
 </style>
