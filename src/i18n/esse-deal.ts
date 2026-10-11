@@ -18,17 +18,19 @@ const pt = {
 	andamento: 'Estudo em andamento',
 	titulo: 'Quando esse deal vai fechar?',
 	lead: 'Errar o <em>quando</em> de um negócio não faz a receita sumir: empurra ela para o mês ou o trimestre seguinte. É isso que estoura uma meta. Este estudo parte dessa pergunta e chega a uma <em>previsão de receita mensal</em>, testada contra o que de fato aconteceu.',
+	definicao:
+		'Aqui, <strong>fechar é ganhar</strong>: o negócio vira receita. Quando ele sai do funil, ganho ou perdido, digo que foi <strong>encerrado</strong>.',
 	fatos: ['8.800 negócios', 'Base pública e sintética (Maven CRM)', 'Python · modelo de risco em tempo discreto'],
 	codigo: 'Ver o código no GitHub',
 	colab: 'Abrir no Colab',
 	resumo: {
 		titulo: 'Em resumo',
 		itens: [
-			'O tempo até fechar tem <strong>dois grupos</strong>: quase metade fecha em até 20 dias, a outra metade leva de 45 a 138. A média não descreve quase ninguém.',
-			'De cada 100 negócios que entram em negociação, cerca de <strong>51 são ganhos, 32 perdidos e 16 nunca fecham</strong>. Depois de 138 dias aberto, nenhum fechou.',
+			'O tempo até o ganho tem <strong>dois grupos</strong>: 42% dos ganhos saem em até 20 dias e 54% levam de 45 a 138. A média não descreve quase ninguém.',
+			'De cada 100 negócios que entram em negociação, cerca de <strong>51 são ganhos, 32 perdidos e 16 ficam parados para sempre</strong>. Depois de 138 dias aberto, nenhum foi ganho.',
 			'O que decide o <em>quando</em> é a <strong>idade do negócio e o mês do trimestre</strong>. Produto, vendedor, regional e porte da conta não melhoraram a previsão.',
 			'Em sete testes, a previsão mensal errou em média <strong>13%</strong>. A conta tradicional, pipeline × taxa de ganho, previu três vezes o real.',
-			'Um alarme simples achou uma regional que <strong>triplicou o pipeline</strong> em três semanas com negócios que nunca fecharam.',
+			'Um alarme simples achou uma regional que <strong>triplicou o pipeline</strong> em três semanas com negócios que ficaram parados.',
 		],
 	},
 	hipoteses: {
@@ -36,10 +38,10 @@ const pt = {
 		intro: 'Antes de olhar os dados, anotei o que eu esperava encontrar, pela experiência em Sales Ops. Registrar isso antes é o que permite dizer, depois, o que os dados confirmaram e o que derrubaram.',
 		lista: [
 			{
-				hipotese: 'Quem fecha rápido converte mais.',
+				hipotese: 'Negócio que anda rápido no funil converte mais.',
 				veredito: 'Não se confirmou',
 				tipo: 'nao',
-				texto: 'Entre os fechados, quem fecha em até 20 dias é ganho 57% das vezes; quem demora mais, 68%. Fechar rápido é, mais vezes, perder rápido. No extremo a ideia vale: depois de 138 dias, nenhum negócio fechou.',
+				texto: 'Entre os negócios encerrados, quem sai do funil em até 20 dias é ganho 57% das vezes; quem demora mais, 68%. Andar rápido é, mais vezes, perder rápido. No extremo a ideia vale: depois de 138 dias, nenhum negócio foi ganho.',
 			},
 			{
 				hipotese: 'Ticket alto alavanca mais a receita do que muitos negócios pequenos.',
@@ -58,28 +60,28 @@ const pt = {
 	media: {
 		titulo: 'A média mente',
 		texto: [
-			'O jeito óbvio de medir o tempo até fechar é tirar a média dos negócios fechados. Ela dá 48 dias, mas quase nenhum negócio leva perto disso.',
-			'Existem dois grupos: 46% fecham em até 20 dias e 50% levam de 45 a 138. Entre um e outro, só 4%. Uma previsão que usa a média erra os dois.',
+			'O jeito óbvio de medir quanto tempo um negócio leva para ser ganho é tirar a média dos ganhos. Ela dá 52 dias, mas quase nenhum ganho acontece perto disso.',
+			'Existem dois grupos: 42% dos ganhos saem em até 20 dias e 54% levam de 45 a 138. Entre um e outro, só 4%. Uma previsão que usa a média erra os dois.',
 		],
-		eixo: 'dias entre a entrada em negociação e o fechamento',
-		legenda: 'negócios fechados',
-		mediaLabel: 'média: 48 dias',
-		aria: 'Histograma dos dias até fechar, com dois picos: um até 20 dias e outro entre 60 e 105 dias',
+		eixo: 'dias entre a entrada em negociação e o ganho',
+		legenda: 'negócios ganhos',
+		mediaLabel: 'média: 52 dias',
+		aria: 'Histograma dos dias até o ganho, com dois picos: um até 20 dias e outro entre 60 e 105 dias',
 	},
 	destinos: {
 		titulo: 'Três destinos, contando os abertos',
 		texto: [
-			'Olhar só quem fechou esquece os negócios que continuam abertos, e muitos deles nunca vão fechar. É como medir o tempo de fila olhando só quem foi atendido.',
+			'Olhar só os ganhos esquece os negócios perdidos e os que continuam abertos, e muitos deles nunca vão sair do lugar. É como medir o tempo de fila olhando só quem foi atendido.',
 			'Contando todos, a pergunta muda de "quanto tempo leva" para "o que acontece com cada 100 negócios que entram".',
 		],
-		barra: { ganhos: 'ganhos', perdidos: 'perdidos', nunca: 'nunca fecham' },
-		curvaTitulo: 'Negócios já fechados, por dias desde a entrada',
-		serieTodos: 'contando os abertos',
-		serieFechados: 'só os que fecharam',
+		barra: { ganhos: 'ganhos', perdidos: 'perdidos', nunca: 'parados para sempre' },
+		curvaTitulo: 'Negócios já ganhos, por dias desde a entrada',
+		serieTodos: 'de todos que entraram',
+		serieFechados: 'só entre os ganhos',
 		eixoX: 'dias desde a entrada em negociação',
-		aria: 'Curva de negócios fechados ao longo dos dias: contando os abertos ela para perto de 84%; só com os fechados chega a 100%',
+		aria: 'Curva de negócios ganhos ao longo dos dias: contando todos que entraram ela para perto de 51%; só entre os ganhos chega a 100%',
 		cuidado:
-			'A base só registra fechamentos entre março e dezembro de 2017. Para a curva não sair torta, usei só os negócios que entraram entre 01/03 e 15/08/2017, que têm os 138 dias completos de observação, e deixei de fora o bloco atípico que aparece mais abaixo.',
+			'A base só registra encerramentos entre março e dezembro de 2017. Para a curva não sair torta, usei só os negócios que entraram entre 01/03 e 15/08/2017, que têm os 138 dias completos de observação, e deixei de fora o bloco atípico que aparece mais abaixo.',
 	},
 	sim: {
 		titulo: 'Explore: um negócio aberto há X dias',
@@ -88,13 +90,13 @@ const pt = {
 		diasUn: 'dias',
 		mes: 'Entrou no',
 		meses: ['1º mês do trimestre', '2º mês', '3º mês'],
-		fecha30: 'Fecha nos próximos 30 dias',
-		ganha30: 'É ganho nos próximos 30 dias',
-		fechaAlgum: 'Fecha algum dia',
-		curva: 'Chance de fechar nos próximos 30 dias, por idade',
-		aria: 'Curva da chance de fechar nos próximos 30 dias conforme a idade do negócio',
+		g30: 'É ganho nos próximos 30 dias',
+		gAlgum: 'É ganho algum dia',
+		parado: 'Fica parado para sempre',
+		curva: 'Chance de ser ganho nos próximos 30 dias, por idade',
+		aria: 'Curva da chance de ser ganho nos próximos 30 dias conforme a idade do negócio',
 		base: (n: string) => `Calculado a partir de ${n} negócios do histórico que estavam abertos com essa idade.`,
-		morto: 'Depois de 138 dias, nenhum negócio do histórico fechou.',
+		morto: 'Depois de 138 dias, nenhum negócio do histórico foi ganho nem perdido.',
 	},
 	receita: {
 		titulo: 'Da chance à receita',
@@ -121,8 +123,8 @@ const pt = {
 	alarme: {
 		titulo: 'O alarme de pipeline inflado',
 		texto: [
-			'O maior erro que sobrou vinha de um bloco de negócios que nunca fecharam. Não era a empresa toda: era a regional Central, que costuma abrir cerca de 62 negócios por semana e abriu 540 em três semanas. Desses, 355 nunca fecharam.',
-			'A regra marca uma semana quando duas coisas acontecem juntas, usando só o que se sabe na data da previsão: as entradas da regional chegam a 1,5 vez o seu normal, e a fração que fecha em até 20 dias fica bem abaixo da das outras regionais na mesma semana. O excesso estimado sai da previsão.',
+			'O maior erro que sobrou vinha de um bloco de negócios que ficaram parados. Não era a empresa toda: era a regional Central, que costuma abrir cerca de 62 negócios por semana e abriu 540 em três semanas. Desses, 355 nunca foram ganhos nem perdidos.',
+			'A regra marca uma semana quando duas coisas acontecem juntas, usando só o que se sabe na data da previsão: as entradas da regional chegam a 1,5 vez o seu normal, e a fração encerrada em até 20 dias fica bem abaixo da das outras regionais na mesma semana. O excesso estimado sai da previsão.',
 			'Sem a primeira condição, a regional West era marcada cinco vezes sem ter pico nenhum. Com as duas, só as três semanas da Central aparecem.',
 		],
 		eixo: 'negócios abertos por semana',
@@ -133,7 +135,7 @@ const pt = {
 	falhou: {
 		titulo: 'O que não funcionou',
 		itens: [
-			'<strong>Regressão logística de ganho contra perda.</strong> Treinada com os fechados, separou ganho de perda tanto quanto cara ou coroa (AUC de 0,49 a 0,53). Nesta base, ganhar ou perder depende em grande parte de quando o negócio fecha.',
+			'<strong>Regressão logística de ganho contra perda.</strong> Treinada com os encerrados, separou ganho de perda tanto quanto cara ou coroa (AUC de 0,49 a 0,53). Nesta base, ganhar ou perder depende em grande parte de quando o negócio é encerrado.',
 			'<strong>Mais variáveis num modelo de árvores.</strong> Com produto, vendedor, gerente e regional, ele melhorou num teste e piorou no outro: decorou ruído.',
 			'<strong>O campo de conta vazia.</strong> Todo negócio sem conta está aberto, então ele entrega o resultado final. Usá-lo no teste seria usar o futuro, e ficou de fora.',
 		],
@@ -161,17 +163,19 @@ const en: typeof pt = {
 	andamento: 'Work in progress',
 	titulo: 'When will this deal close?',
 	lead: 'Getting the <em>when</em> of a deal wrong does not make the revenue disappear: it pushes it into the next month or quarter. That is what breaks a target. This study starts from that question and ends with a <em>monthly revenue forecast</em>, tested against what actually happened.',
+	definicao:
+		'Here, <strong>closing means winning</strong>: the deal becomes revenue. When it leaves the pipeline, won or lost, I say it was <strong>resolved</strong>.',
 	fatos: ['8,800 deals', 'Public synthetic dataset (Maven CRM)', 'Python · discrete-time hazard model'],
 	codigo: 'See the code on GitHub',
 	colab: 'Open in Colab',
 	resumo: {
 		titulo: 'In short',
 		itens: [
-			'Time to close has <strong>two groups</strong>: almost half close within 20 days, the other half take 45 to 138. The average describes almost nobody.',
-			'Out of every 100 deals that enter negotiation, about <strong>51 are won, 32 lost and 16 never close</strong>. After 138 days open, none closed.',
+			'Time to win has <strong>two groups</strong>: 42% of wins come within 20 days and 54% take 45 to 138. The average describes almost nobody.',
+			'Out of every 100 deals that enter negotiation, about <strong>51 are won, 32 lost and 16 stay stuck forever</strong>. After 138 days open, none was won.',
 			'What decides the <em>when</em> is <strong>deal age and month of the quarter</strong>. Product, sales rep, region and account size did not improve the forecast.',
 			'Across seven tests, the monthly forecast missed by <strong>13%</strong> on average. The classic pipeline × win rate forecast predicted three times the actual.',
-			'A simple alarm found a region that <strong>tripled its pipeline</strong> in three weeks with deals that never closed.',
+			'A simple alarm found a region that <strong>tripled its pipeline</strong> in three weeks with deals that got stuck.',
 		],
 	},
 	hipoteses: {
@@ -179,10 +183,10 @@ const en: typeof pt = {
 		intro: 'Before looking at the data, I wrote down what I expected, from my experience in Sales Ops. Writing it down first is what lets me say, later, what the data confirmed and what it overturned.',
 		lista: [
 			{
-				hipotese: 'Deals that close fast convert more.',
+				hipotese: 'Deals that move fast through the pipeline convert more.',
 				veredito: 'Not confirmed',
 				tipo: 'nao',
-				texto: 'Among closed deals, those closed within 20 days are won 57% of the time; slower ones, 68%. Closing fast more often means losing fast. At the extreme the idea holds: after 138 days, no deal closed.',
+				texto: 'Among resolved deals, those that leave the pipeline within 20 days are won 57% of the time; slower ones, 68%. Moving fast more often means losing fast. At the extreme the idea holds: after 138 days, no deal was won.',
 			},
 			{
 				hipotese: 'High tickets drive more revenue than many small deals.',
@@ -201,28 +205,28 @@ const en: typeof pt = {
 	media: {
 		titulo: 'The average lies',
 		texto: [
-			'The obvious way to measure time to close is to average the closed deals. That gives 48 days, but almost no deal takes anywhere near that long.',
-			'There are two groups: 46% close within 20 days and 50% take 45 to 138. In between, only 4%. A forecast built on the average gets both wrong.',
+			'The obvious way to measure how long a deal takes to be won is to average the wins. That gives 52 days, but almost no win happens anywhere near that.',
+			'There are two groups: 42% of wins come within 20 days and 54% take 45 to 138. In between, only 4%. A forecast built on the average gets both wrong.',
 		],
-		eixo: 'days between entering negotiation and closing',
-		legenda: 'closed deals',
-		mediaLabel: 'average: 48 days',
-		aria: 'Histogram of days to close with two peaks: one up to 20 days and another between 60 and 105 days',
+		eixo: 'days between entering negotiation and the win',
+		legenda: 'won deals',
+		mediaLabel: 'average: 52 days',
+		aria: 'Histogram of days to win with two peaks: one up to 20 days and another between 60 and 105 days',
 	},
 	destinos: {
 		titulo: 'Three outcomes, counting open deals',
 		texto: [
-			'Looking only at closed deals forgets the ones still open, and many of them will never close. It is like measuring wait time by looking only at people who were served.',
+			'Looking only at wins forgets the lost deals and the ones still open, and many of those will never move. It is like measuring wait time by looking only at people who were served.',
 			'Counting everyone, the question changes from "how long does it take" to "what happens to every 100 deals that come in".',
 		],
-		barra: { ganhos: 'won', perdidos: 'lost', nunca: 'never close' },
-		curvaTitulo: 'Deals already closed, by days since entry',
-		serieTodos: 'counting open deals',
-		serieFechados: 'closed deals only',
+		barra: { ganhos: 'won', perdidos: 'lost', nunca: 'stuck forever' },
+		curvaTitulo: 'Deals already won, by days since entry',
+		serieTodos: 'of every deal that came in',
+		serieFechados: 'among wins only',
 		eixoX: 'days since entering negotiation',
-		aria: 'Curve of closed deals over time: counting open deals it levels off near 84%; closed deals only reach 100%',
+		aria: 'Curve of won deals over time: counting every deal that came in it levels off near 51%; among wins only it reaches 100%',
 		cuidado:
-			'The dataset only records closings between March and December 2017. To keep the curve honest, I used only deals that entered between 2017-03-01 and 2017-08-15, which have the full 138 days of observation, and left out the unusual block shown further down.',
+			'The dataset only records resolutions between March and December 2017. To keep the curve honest, I used only deals that entered between 2017-03-01 and 2017-08-15, which have the full 138 days of observation, and left out the unusual block shown further down.',
 	},
 	sim: {
 		titulo: 'Explore: a deal open for X days',
@@ -231,13 +235,13 @@ const en: typeof pt = {
 		diasUn: 'days',
 		mes: 'Came in during the',
 		meses: ['1st month of the quarter', '2nd month', '3rd month'],
-		fecha30: 'Closes in the next 30 days',
-		ganha30: 'Is won in the next 30 days',
-		fechaAlgum: 'Ever closes',
-		curva: 'Chance of closing in the next 30 days, by age',
-		aria: 'Curve of the chance of closing in the next 30 days by deal age',
+		g30: 'Is won in the next 30 days',
+		gAlgum: 'Is ever won',
+		parado: 'Stays stuck forever',
+		curva: 'Chance of being won in the next 30 days, by age',
+		aria: 'Curve of the chance of being won in the next 30 days by deal age',
 		base: (n: string) => `Based on ${n} historical deals that were open at this age.`,
-		morto: 'After 138 days, no deal in the history closed.',
+		morto: 'After 138 days, no deal in the history was won or lost.',
 	},
 	receita: {
 		titulo: 'From chance to revenue',
@@ -264,8 +268,8 @@ const en: typeof pt = {
 	alarme: {
 		titulo: 'The inflated pipeline alarm',
 		texto: [
-			'The biggest remaining error came from a block of deals that never closed. It was not the whole company: it was the Central region, which usually opens about 62 deals a week and opened 540 in three weeks. Of those, 355 never closed.',
-			'The rule flags a week when two things happen together, using only what is known on the forecast date: the region’s new deals reach 1.5 times its normal level, and the share closing within 20 days falls well below the other regions in the same week. The estimated excess is removed from the forecast.',
+			'The biggest remaining error came from a block of deals that got stuck. It was not the whole company: it was the Central region, which usually opens about 62 deals a week and opened 540 in three weeks. Of those, 355 were never won or lost.',
+			'The rule flags a week when two things happen together, using only what is known on the forecast date: the region’s new deals reach 1.5 times its normal level, and the share resolved within 20 days falls well below the other regions in the same week. The estimated excess is removed from the forecast.',
 			'Without the first condition, the West region was flagged five times with no spike at all. With both, only the three Central weeks show up.',
 		],
 		eixo: 'new deals per week',
@@ -276,7 +280,7 @@ const en: typeof pt = {
 	falhou: {
 		titulo: 'What did not work',
 		itens: [
-			'<strong>Logistic regression of won vs. lost.</strong> Trained on closed deals, it separated wins from losses no better than a coin flip (AUC 0.49 to 0.53). In this dataset, winning or losing depends largely on when the deal closes.',
+			'<strong>Logistic regression of won vs. lost.</strong> Trained on resolved deals, it separated wins from losses no better than a coin flip (AUC 0.49 to 0.53). In this dataset, winning or losing depends largely on when the deal is resolved.',
 			'<strong>More features in a tree model.</strong> With product, rep, manager and region, it improved on one test and got worse on the other: it memorized noise.',
 			'<strong>The empty account field.</strong> Every deal without an account is still open, so the field gives away the outcome. Using it in the test would mean using the future, so it stayed out.',
 		],

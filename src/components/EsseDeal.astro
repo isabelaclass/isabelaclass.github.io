@@ -18,8 +18,8 @@ const pctFmt = new Intl.NumberFormat(locale, { style: 'percent' });
 const mi = (v: number) =>
 	lang === 'pt' ? `${(v / 1e6).toFixed(2).replace('.', ',')} mi` : `${(v / 1e6).toFixed(2)}M`;
 
-// ---------- histograma: dias até fechar ----------
-const H = { x0: 48, x1: 628, y0: 24, y1: 188, dmax: 140, nmax: 1400 };
+// ---------- histograma: dias até o ganho ----------
+const H = { x0: 48, x1: 628, y0: 24, y1: 188, dmax: 140, nmax: 900 };
 const hx = (d: number) => H.x0 + (d / H.dmax) * (H.x1 - H.x0);
 const hy = (n: number) => H.y1 - (n / H.nmax) * (H.y1 - H.y0);
 const barras = dados.hist.map((b) => ({
@@ -29,7 +29,8 @@ const barras = dados.hist.map((b) => ({
 	h: H.y1 - hy(b.n),
 	rapido: b.ate <= 20,
 }));
-const ticksY = [0, 500, 1000];
+const ticksY = [0, 400, 800];
+const MEDIA_GANHO = 52; // média de dias até o ganho
 const ticksX = [0, 20, 45, 90, 138];
 
 // ---------- três destinos ----------
@@ -40,7 +41,7 @@ const fatias = [
 	{ k: 'nunca', v: d.abertos, cls: 'f-nunca', label: t.destinos.barra.nunca },
 ];
 
-// ---------- curva de fechamento ----------
+// ---------- curva de ganhos ao longo do tempo ----------
 const C = { x0: 48, x1: 628, y0: 16, y1: 196, dmax: 150 };
 const cx = (dd: number) => C.x0 + (dd / C.dmax) * (C.x1 - C.x0);
 const cy = (p: number) => C.y1 - (p / 100) * (C.y1 - C.y0);
@@ -51,9 +52,10 @@ const pFechados = linha(dados.curva.so_fechados);
 const fimTodos = dados.curva.todos[dados.curva.todos.length - 1];
 
 // ---------- simulador ----------
-const S = { x0: 40, x1: 392, y0: 12, y1: 132, amax: 140 };
+// escala vertical até 50%: a chance de ganho em 30 dias nunca passa disso
+const S = { x0: 40, x1: 392, y0: 12, y1: 132, amax: 140, pmax: 0.5 };
 const sx = (a: number) => S.x0 + (a / S.amax) * (S.x1 - S.x0);
-const sy = (p: number) => S.y1 - p * (S.y1 - S.y0);
+const sy = (p: number) => S.y1 - (p / S.pmax) * (S.y1 - S.y0);
 const sim = dados.sim as Record<string, number[][]>;
 const curvasSim = (['1', '2', '3'] as const).map((q) => ({
 	q,
@@ -105,7 +107,10 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 				</div>
 				<h1 class="display">{t.titulo}</h1>
 				<div class="abertura">
-					<p class="lead" set:html={t.lead} />
+					<div>
+						<p class="lead" set:html={t.lead} />
+						<p class="definicao" set:html={t.definicao} />
+					</div>
 					<div class="ficha">
 						<ul class="fatos">
 							{t.fatos.map((f) => <li>{f}</li>)}
@@ -160,8 +165,8 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 								))
 							}
 							{barras.map((b) => <rect class={b.rapido ? 'bar bar--rapido' : 'bar'} x={b.x} y={b.y} width={b.w} height={b.h} rx="2" />)}
-							<line class="media" x1={hx(48)} x2={hx(48)} y1={H.y0} y2={H.y1} />
-							<text class="media-t" x={hx(48) + 6} y={H.y0 + 12}>{t.media.mediaLabel}</text>
+							<line class="media" x1={hx(MEDIA_GANHO)} x2={hx(MEDIA_GANHO)} y1={H.y0} y2={H.y1} />
+							<text class="media-t" x={hx(MEDIA_GANHO) + 6} y={H.y0 + 12}>{t.media.mediaLabel}</text>
 							{ticksX.map((v) => <text class="tick" x={hx(v)} y={H.y1 + 18} text-anchor="middle">{v}</text>)}
 							<text class="eixo" x={(H.x0 + H.x1) / 2} y="240" text-anchor="middle">{t.media.eixo}</text>
 						</svg>
@@ -201,7 +206,7 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 							<path class="l-fechados" d={pFechados} />
 							<path class="l-todos" d={pTodos} />
 							<text class="rot rot--ink" x={cx(96)} y={cy(97)} text-anchor="end">{t.destinos.serieFechados}</text>
-							<text class="rot rot--mag" x={C.x1} y={cy(45)} text-anchor="end">{t.destinos.serieTodos} · {num.format(fimTodos)}%</text>
+							<text class="rot rot--mag" x={C.x1} y={cy(fimTodos - 9)} text-anchor="end">{t.destinos.serieTodos} · {num.format(fimTodos)}%</text>
 							{[0, 30, 60, 90, 120, 150].map((v) => <text class="tick" x={cx(v)} y={C.y1 + 18} text-anchor="middle">{v}</text>)}
 							<text class="eixo" x={(C.x0 + C.x1) / 2} y="248" text-anchor="middle">{t.destinos.eixoX}</text>
 						</svg>
@@ -234,15 +239,15 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 							</div>
 							<dl class="leituras" aria-live="polite">
 								<div class="leitura leitura--main">
-									<dt>{t.sim.fecha30}</dt>
+									<dt>{t.sim.g30}</dt>
 									<dd class="display" data-f30>{pctFmt.format(r0[2])}</dd>
 								</div>
 								<div class="leitura">
-									<dt>{t.sim.ganha30}</dt>
+									<dt>{t.sim.gAlgum}</dt>
 									<dd class="display" data-w30>{pctFmt.format(r0[3])}</dd>
 								</div>
 								<div class="leitura">
-									<dt>{t.sim.fechaAlgum}</dt>
+									<dt>{t.sim.parado}</dt>
 									<dd class="display" data-ever>{pctFmt.format(r0[4])}</dd>
 								</div>
 							</dl>
@@ -251,7 +256,7 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 							<figcaption class="fig-t">{t.sim.curva}</figcaption>
 							<svg viewBox="0 0 400 156" role="img" aria-label={t.sim.aria}>
 								{
-									[0, 0.5, 1].map((v) => (
+									[0, 0.25, 0.5].map((v) => (
 										<g>
 											<line class="grid" x1={S.x0} x2={S.x1} y1={sy(v)} y2={sy(v)} />
 											<text class="tick" x={S.x0 - 6} y={sy(v) + 4} text-anchor="end">{pctFmt.format(v)}</text>
@@ -361,7 +366,7 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 </Layout>
 
 <script>
-	type Dados = { sim: Record<string, number[][]>; S: { x0: number; x1: number; y0: number; y1: number; amax: number } };
+	type Dados = { sim: Record<string, number[][]>; S: { x0: number; x1: number; y0: number; y1: number; amax: number; pmax: number } };
 	const el = document.getElementById('sim-dados');
 	const box = document.querySelector<HTMLElement>('[data-sim]');
 	if (el && box) {
@@ -384,7 +389,7 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 			set('[data-w30]', pct.format(r[3]));
 			set('[data-ever]', pct.format(r[4]));
 			dot.setAttribute('cx', String(S.x0 + (idade / S.amax) * (S.x1 - S.x0)));
-			dot.setAttribute('cy', String(S.y1 - r[2] * (S.y1 - S.y0)));
+			dot.setAttribute('cy', String(S.y1 - (r[2] / S.pmax) * (S.y1 - S.y0)));
 			curvas.forEach((c) => c.toggleAttribute('hidden', c.dataset.curva !== mes));
 			botoes.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.mes === mes)));
 			base.textContent =
@@ -451,6 +456,15 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 		font-size: 24px;
 		line-height: 1.4;
 		text-wrap: pretty;
+	}
+	.definicao {
+		margin: 18px 0 0;
+		max-width: 640px;
+		font-size: 16px;
+		color: var(--ink-soft);
+	}
+	.definicao :global(strong) {
+		color: var(--ink);
 	}
 	.lead :global(em) {
 		font-family: var(--font-display);
