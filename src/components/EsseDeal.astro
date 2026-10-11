@@ -206,7 +206,7 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 							<path class="l-fechados" d={pFechados} />
 							<path class="l-todos" d={pTodos} />
 							<text class="rot rot--ink" x={cx(96)} y={cy(97)} text-anchor="end">{t.destinos.serieFechados}</text>
-							<text class="rot rot--mag" x={C.x1} y={cy(fimTodos - 9)} text-anchor="end">{t.destinos.serieTodos} · {num.format(fimTodos)}%</text>
+							<text class="rot rot--mag" x={C.x1} y={cy(fimTodos - 31)} text-anchor="end">{t.destinos.serieTodos} · {num.format(fimTodos)}%</text>
 							{[0, 30, 60, 90, 120, 150].map((v) => <text class="tick" x={cx(v)} y={C.y1 + 18} text-anchor="middle">{v}</text>)}
 							<text class="eixo" x={(C.x0 + C.x1) / 2} y="248" text-anchor="middle">{t.destinos.eixoX}</text>
 						</svg>
@@ -730,6 +730,11 @@ const ticksSem = sem.map((w, i) => ({ i, w })).filter((_, i) => i % 4 === 0);
 	.rot {
 		font-size: 14px;
 		font-weight: 700;
+		/* contorno da cor do fundo: linhas de referência passam por trás do rótulo */
+		paint-order: stroke;
+		stroke: var(--paper);
+		stroke-width: 6px;
+		stroke-linejoin: round;
 	}
 	.rot--mag {
 		fill: var(--magenta);
