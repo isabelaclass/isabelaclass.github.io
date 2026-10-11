@@ -17,7 +17,7 @@ const pt = {
 	projeto: 'Projeto 01',
 	andamento: 'Estudo em andamento',
 	titulo: 'Quando esse deal vai fechar?',
-	lead: 'Errar o <em>quando</em> de um negócio não faz a receita sumir: empurra ela para o mês ou o trimestre seguinte. É isso que estoura uma meta. Este estudo parte dessa pergunta e chega a uma <em>previsão de receita mensal</em>, testada contra o que de fato aconteceu.',
+	lead: 'Entender o <em>quando</em> de um negócio é primordial para a construção de um forecast assertivo. Errar a expectativa de tempo de fechamento não faz a receita sumir, mas a empurra para o próximo mês e, em alguns casos, para o próximo trimestre, comprometendo a meta. Este estudo nasceu para construir um modelo que torne a previsibilidade da receita palpável: uma <em>previsão de receita mensal</em>, testada contra o que de fato aconteceu.',
 	definicao:
 		'Aqui, <strong>fechar é ganhar</strong>: o negócio vira receita. Quando ele sai do funil, ganho ou perdido, digo que foi <strong>encerrado</strong>.',
 	fatos: ['8.800 negócios', 'Base pública e sintética (Maven CRM)', 'Python · modelo de risco em tempo discreto'],
@@ -162,7 +162,7 @@ const en: typeof pt = {
 	projeto: 'Project 01',
 	andamento: 'Work in progress',
 	titulo: 'When will this deal close?',
-	lead: 'Getting the <em>when</em> of a deal wrong does not make the revenue disappear: it pushes it into the next month or quarter. That is what breaks a target. This study starts from that question and ends with a <em>monthly revenue forecast</em>, tested against what actually happened.',
+	lead: 'Understanding the <em>when</em> of a deal is paramount to building an accurate forecast. Misjudging the expected time to close does not make the revenue disappear; it pushes it into the next month and, in some cases, into the next quarter, jeopardizing the target. This study was born to build a model that makes revenue predictability tangible: a <em>monthly revenue forecast</em>, tested against what actually happened.',
 	definicao:
 		'Here, <strong>closing means winning</strong>: the deal becomes revenue. When it leaves the pipeline, won or lost, I say it was <strong>resolved</strong>.',
 	fatos: ['8,800 deals', 'Public synthetic dataset (Maven CRM)', 'Python · discrete-time hazard model'],
